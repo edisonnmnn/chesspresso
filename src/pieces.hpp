@@ -58,7 +58,7 @@ protected:
     CapturedState currentState;
     int row;
     char col;
-    bool hasMoved = false;
+    bool hasMoved{false};
     // Legal Squares Set that keeps track of all legal moves
     // Game will dynamically update this for every Piece
     std::set<std::string> legalSquares;
