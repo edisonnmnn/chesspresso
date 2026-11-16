@@ -1,8 +1,5 @@
 #pragma once
-#include <iostream>
-#include <memory>
-#include <vector>
-#include <string>
+#include <set>
 
 // Chess Pieces
 enum class ChessPieces { Pawn, Knight, Bishop, Rook, Queen, King };
@@ -33,11 +30,28 @@ public:
  
     virtual ~Piece() = default;
     
+    // shared operations
+    // quiet move
+    virtual void moveToEmptySquare(int row, char col);
+    // capture 
+    // TODO: Do we need a capture in the class?
+    virtual void captureEnemyPiece();
+
+    // design: legality should be the actual game/board's decision, pieces just need to move
+    // legal move
+    // - out of bounds
+    // - blocked by another piece (opponents or your own)
+    // - pins
+    //
+    
+    // setter operations
+    void setCurrentState(CapturedState state);
+
     // getter operations
-    CapturedState getCurrentState() const { return currentState; }
-    int getRow() const { return row; }
-    char getCol() const { return col; }
-    bool pieceHasMoved() const { return hasMoved; }
+    CapturedState getCurrentState() const;
+    int getRow() const; 
+    char getCol() const; 
+    bool pieceHasMoved() const;
 
 protected:
     Color color;
@@ -45,6 +59,10 @@ protected:
     int row;
     char col;
     bool hasMoved = false;
+    // Legal Squares Set that keeps track of all legal moves
+    // Game will dynamically update this for every Piece
+    std::set<std::string> legalSquares;
+
 };
 
 // Type: Pawn
@@ -55,8 +73,11 @@ protected:
 // Special: Promotion
 class Pawn : public Piece {
 public:
+    explicit Pawn(Color color, CapturedState state, int row, char col) :
+        Piece(color, state, row, col) {}
 
-private;
+private:
+    
 };
 
 // Type: Knight
@@ -77,3 +98,4 @@ private;
 // Movement: One square in any direction
 // Special: Cannot move into a square that will put it in danger
 // Special: Castle with Rook (depends onj game history)
+// Special: Check/Checkmate, King will never be captured
