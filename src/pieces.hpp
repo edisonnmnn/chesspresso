@@ -1,4 +1,5 @@
 #pragma once
+    
 #include <set>
 
 // Chess Pieces
@@ -25,17 +26,21 @@ enum class Color { White, Black };
 // Capture: moves onto an enemy piece, overtaking the enemy piece's square
 class Piece {
 public:
-    explicit Piece(Color color, CapturedState state, int row, char col) : 
-        color(color), currentState(state), row(row), col(col) {}
- 
-    virtual ~Piece() = default;
+    explicit Piece(Color color, CapturedState state, int row, char col);
+    ~Piece() = default;
     
+    // setter operations
+    void setHasMoved();
+
+    // getter operations
+    CapturedState currentState() const noexcept;
+    int row() const noexcept; 
+    char col() const noexcept; 
+    bool hasMoved() const noexcept;
+
     // shared operations
     // quiet move
-    virtual void moveToEmptySquare(int row, char col);
-    // capture 
-    // TODO: Do we need a capture in the class?
-    virtual void captureEnemyPiece();
+    void movePiece(int row, char col);
 
     // design: legality should be the actual game/board's decision, pieces just need to move
     // legal move
@@ -43,25 +48,13 @@ public:
     // - blocked by another piece (opponents or your own)
     // - pins
     //
-    
-    // setter operations
-    void setCurrentState(CapturedState state);
-
-    // getter operations
-    CapturedState getCurrentState() const;
-    int getRow() const; 
-    char getCol() const; 
-    bool pieceHasMoved() const;
-
+ 
 protected:
-    Color color;
-    CapturedState currentState;
-    int row;
-    char col;
-    bool hasMoved{false};
-    // Legal Squares Set that keeps track of all legal moves
-    // Game will dynamically update this for every Piece
-    std::set<std::string> legalSquares;
+    Color color_;
+    CapturedState currentState_;
+    int row_;
+    char col_;
+    bool hasMoved_{false};
 
 };
 

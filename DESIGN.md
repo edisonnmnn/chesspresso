@@ -10,3 +10,6 @@ i could have each piece have a set of its legal moves (which would also be o(1) 
 I'm thinking that if a piece moves and is in a piece's legal moves set, then there will be some logic
 ^ (own piece = blocks, opponent piece, blocks/needs to capture)
 - also if pinned to king
+
+- Movement desicison will be made on the board, Pieces will only be for holding basic data, no inheritance
+- Allowed Moves is way more difficult, keep a isSquareAttacked in the board, keep basic data to the Pieces still
