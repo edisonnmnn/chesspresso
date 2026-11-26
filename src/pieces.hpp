@@ -1,9 +1,8 @@
 #pragma once
+#include <string>
     
-#include <set>
-
 // Chess Pieces
-enum class ChessPieces { Pawn, Knight, Bishop, Rook, Queen, King };
+enum class Pieces { Pawn, Knight, Bishop, Rook, Queen, King };
 
 // Piece State
 enum class CapturedState { Alive, Dead };
@@ -26,7 +25,7 @@ enum class Color { White, Black };
 // Capture: moves onto an enemy piece, overtaking the enemy piece's square
 class Piece {
 public:
-    explicit Piece(Color color, CapturedState state, int row, char col);
+    explicit Piece(Color color, CapturedState state, Pieces type, int row, char col);
     ~Piece() = default;
     
     // setter operations
@@ -34,12 +33,13 @@ public:
 
     // getter operations
     CapturedState currentState() const noexcept;
+    Pieces getPiece() const noexcept;
     int row() const noexcept; 
     char col() const noexcept; 
     bool hasMoved() const noexcept;
 
     // shared operations
-    // quiet move
+    // update the piece's position
     void movePiece(int row, char col);
 
     // design: legality should be the actual game/board's decision, pieces just need to move
@@ -49,9 +49,10 @@ public:
     // - pins
     //
  
-protected:
+private:
     Color color_;
     CapturedState currentState_;
+    Pieces type_;
     int row_;
     char col_;
     bool hasMoved_{false};
